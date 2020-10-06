@@ -9,20 +9,19 @@ router.get("/notes", async (req, res) => {
     return res.status(200).json(notes);
   } catch (err) {
     console.log(err);
-    return res.status(500).json({ message: err.message });
+    return res.status(500).json({ message: "Internal server error." });
   }
 });
 
 router.post("/note", async (req, res) => {
   try {
     const newNote = new Note(req.body);
-
     await newNote.save();
     const notes = await Note.find({});
     return res.status(200).json(notes);
   } catch (err) {
     console.log(err);
-    return res.status(500).json({ message: err.message });
+    return res.status(500).json({ message: "Internal server error." });
   }
 });
 
@@ -33,7 +32,7 @@ router.delete("/note/:id", async (req, res) => {
     const notes = await Note.find({});
     return res.status(200).json(notes);
   } catch (err) {
-    return res.status(500).json({ message: err.message });
+    return res.status(500).json({ message: "Internal server error" });
   }
 });
 
