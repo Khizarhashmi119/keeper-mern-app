@@ -1,13 +1,12 @@
 import React from "react";
 
 const Footer = () => {
-  const date = new Date();
-  const year = date.getFullYear();
+  const currentYear = new Date().getFullYear();
 
   return (
     <footer>
       <p className="footer-p">
-        &copy; Copyright {year} made with ❤ by Mohd. Khizar Hashmi
+        &copy; Copyright {currentYear} made with ❤ by Mohd. Khizar Hashmi
       </p>
     </footer>
   );

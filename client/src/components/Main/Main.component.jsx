@@ -7,35 +7,40 @@ const Main = () => {
   const [notes, setNotes] = useState([]);
 
   const addNote = async (note) => {
-    const res = await fetch("http://localhost:5000/api/note", {
+    const res = await fetch("/api/note", {
       method: "POST",
       headers: {
         "content-type": "application/json",
       },
-      body: JSON.stringify({ title: note.title, content: note.content }),
+      body: JSON.stringify(note),
     });
 
-    const notes = await res.json();
-    setNotes(notes);
+    const newNote = await res.json();
+
+    setNotes((prevState) => {
+      return [...prevState, newNote];
+    });
   };
 
   const deleteNote = async (id) => {
-    const res = await fetch(`http://localhost:5000/api/note/${id}`, {
+    await fetch(`/api/note/${id}`, {
       method: "DELETE",
       headers: {
         "content-type": "application/json",
       },
     });
 
-    const notes = await res.json();
-    setNotes(notes);
+    setNotes((prevState) => {
+      return prevState.filter((note) => note._id !== id);
+    });
   };
 
   useEffect(() => {
     const fetchData = async () => {
-      const res = await fetch("http://localhost:5000/api/notes", {
+      const res = await fetch("/api/notes", {
         method: "GET",
       });
+
       const notes = await res.json();
       setNotes(notes);
     };
@@ -46,10 +51,10 @@ const Main = () => {
   return (
     <main>
       <CreateNote addNote={addNote} />
-      {notes ? (
+      {notes.length !== 0 ? (
         <NoteList notes={notes} deleteNote={deleteNote} />
       ) : (
-        "Sorry! you do not have any notes."
+        <h2>You don't have any note yet.</h2>
       )}
     </main>
   );

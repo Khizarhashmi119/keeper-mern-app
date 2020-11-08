@@ -1,8 +1,7 @@
-if(process.env.NODE_ENV !== "production") {
+if (process.env.NODE_ENV === "development") {
   require("dotenv").config();
 }
 const express = require("express");
-const cors = require("cors");
 const path = require("path");
 
 const connectDB = require("./db");
@@ -10,21 +9,27 @@ const noteRoutes = require("./routes/api/note-routes");
 
 const app = express();
 
-const PORT = process.env.PORT || 5000;
-
+//* Database connect
 connectDB();
 
+//* Middlewares
 app.use(express.json({ extended: true }));
-app.use(cors());
-
+if (process.env.NODE_ENV === "development") {
+  app.use(require("morgan")("dev"));
+}
+//* API routes
 app.use("/api", noteRoutes);
 
 if (process.env.NODE_ENV === "production") {
-  app.use(express.static("client/build"));
+  app.use(express.static(path.join(__dirname, "client", "build")));
 
   app.get("*", (req, res) => {
     res.sendFile(path.join(__dirname, "client", "build", "index.html"));
   });
 }
 
-app.listen(PORT, () => console.log(`Server is running at port ${PORT}...`));
+app.listen(process.env.PORT, () =>
+  console.log(
+    `Server is running in ${process.env.NODE_ENV} mode at port ${process.env.PORT}`
+  )
+);
