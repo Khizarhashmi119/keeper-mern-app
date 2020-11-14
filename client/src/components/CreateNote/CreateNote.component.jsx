@@ -33,7 +33,7 @@ const CreateNote = ({ addNote }) => {
         value={note.title}
         placeholder="Title"
         onChange={changeHandler}
-        onClick={clickHandler}
+        onFocus={clickHandler}
       />
       {isExpand && (
         <textarea
@@ -45,7 +45,9 @@ const CreateNote = ({ addNote }) => {
           onChange={changeHandler}
         ></textarea>
       )}
-      <button type="submit">+</button>
+      <button type="submit" disabled={!note.title && !note.content}>
+        <i className="fas fa-plus"></i>
+      </button>
     </form>
   );
 };

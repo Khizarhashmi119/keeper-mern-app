@@ -9,7 +9,7 @@ const Note = ({ id, title, content, deleteNote }) => {
     <div className="note-container">
       <h3>{title}</h3>
       <p>{content}</p>
-      <button onClick={clickHandler}>Delete</button>
+      <button onClick={clickHandler}><i className="fas fa-trash"></i></button>
     </div>
   );
 };
